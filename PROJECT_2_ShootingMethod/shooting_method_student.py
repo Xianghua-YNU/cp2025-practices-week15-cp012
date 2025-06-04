@@ -1,229 +1,242 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-项目2：打靶法与scipy.solve_bvp求解边值问题 - 学生代码模板
+项目2：打靶法与scipy.solve_bvp求解边值问题
 
 本项目要求实现打靶法和scipy.solve_bvp两种方法来求解二阶线性常微分方程边值问题：
 u''(x) = -π(u(x)+1)/4
 边界条件：u(0) = 1, u(1) = 1
-
-学生姓名：[YOUR_NAME]
+学生姓名：[]
 学号：[YOUR_STUDENT_ID]
 完成日期：[COMPLETION_DATE]
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import odeint, solve_ivp, solve_bvp
+from scipy.integrate import solve_ivp, solve_bvp
 from scipy.optimize import fsolve
 import warnings
+import matplotlib
+
+# 设置中文字体
+matplotlib.rcParams['font.sans-serif'] = ['SimHei']  # 使用黑体显示中文
+matplotlib.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 warnings.filterwarnings('ignore')
 
 
 def ode_system_shooting(t, y):
     """
-    Define the ODE system for shooting method.
-    
-    Convert the second-order ODE u'' = -π(u+1)/4 into a first-order system:
+    为打靶法定义ODE系统
+
+    将二阶ODE u'' = -π(u+1)/4转化为一阶系统:
     y1 = u, y2 = u'
     y1' = y2
     y2' = -π(y1+1)/4
-    
-    Args:
-        t (float): Independent variable (time/position)
-        y (array): State vector [y1, y2] where y1=u, y2=u'
-    
-    Returns:
-        list: Derivatives [y1', y2']
-    
-    TODO: Implement the ODE system conversion
-    Hint: Return [y[1], -np.pi*(y[0]+1)/4]
+
+    参数:
+        t (float): 自变量(时间/位置)
+        y (array): 状态向量 [y1, y2], 其中 y1=u, y2=u'
+
+    返回:
+        list: 导数值 [y1', y2']
     """
-    # TODO: Implement ODE system for shooting method
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement ode_system_shooting function")
+    dydt = [
+        y[1],  # u' = y2
+        -np.pi * (y[0] + 1) / 4  # u'' = -π(u+1)/4
+    ]
+    return dydt
 
 
 def boundary_conditions_scipy(ya, yb):
     """
-    Define boundary conditions for scipy.solve_bvp.
-    
-    Boundary conditions: u(0) = 1, u(1) = 1
-    ya[0] should equal 1, yb[0] should equal 1
-    
-    Args:
-        ya (array): Values at left boundary [u(0), u'(0)]
-        yb (array): Values at right boundary [u(1), u'(1)]
-    
-    Returns:
-        array: Boundary condition residuals
-    
-    TODO: Implement boundary conditions
-    Hint: Return np.array([ya[0] - 1, yb[0] - 1])
+    为scipy.solve_bvp定义边界条件
+
+    边界条件: u(0) = 1, u(1) = 1
+    ya[0] 应该等于 1, yb[0] 应该等于 1
+
+    参数:
+        ya (array): 左边界值 [u(0), u'(0)]
+        yb (array): 右边界值 [u(1), u'(1)]
+
+    返回:
+        array: 边界条件残差
     """
-    # TODO: Implement boundary conditions for scipy.solve_bvp
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement boundary_conditions_scipy function")
+    return np.array([ya[0] - 1, yb[0] - 1])
 
 
 def ode_system_scipy(x, y):
     """
-    Define the ODE system for scipy.solve_bvp.
-    
-    Note: scipy.solve_bvp uses (x, y) parameter order, different from odeint
-    
-    Args:
-        x (float): Independent variable
-        y (array): State vector [y1, y2]
-    
-    Returns:
-        array: Derivatives as column vector
-    
-    TODO: Implement ODE system for scipy.solve_bvp
-    Hint: Use np.vstack to return column vector
+    为scipy.solve_bvp定义ODE系统
+
+    参数:
+        x (float): 自变量
+        y (array): 状态向量 [y1, y2]
+
+    返回:
+        array: 导数组成的列向量
     """
-    # TODO: Implement ODE system for scipy.solve_bvp
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement ode_system_scipy function")
+    return np.vstack([y[1], -np.pi * (y[0] + 1) / 4])
 
 
-def solve_bvp_shooting_method(x_span, boundary_conditions, n_points=100, max_iterations=10, tolerance=1e-6):
+def solve_bvp_shooting_method(x_span, boundary_conditions, n_points=100, tolerance=1e-6):
     """
-    Solve boundary value problem using shooting method.
-    
-    Algorithm:
-    1. Guess initial slope m1
-    2. Solve IVP with initial conditions [u(0), m1]
-    3. Check if u(1) matches boundary condition
-    4. If not, adjust slope using secant method and repeat
-    
-    Args:
-        x_span (tuple): Domain (x_start, x_end)
+    使用打靶法求解边界值问题
+
+    参数:
+        x_span (tuple): 求解域 (x_start, x_end)
         boundary_conditions (tuple): (u_left, u_right)
-        n_points (int): Number of discretization points
-        max_iterations (int): Maximum iterations for shooting
-        tolerance (float): Convergence tolerance
-    
-    Returns:
-        tuple: (x_array, y_array) solution arrays
-    
-    TODO: Implement shooting method algorithm
-    Hint: Use secant method to adjust initial slope
+        n_points (int): 离散点的数量
+        tolerance (float): 收敛容差
+
+    返回:
+        tuple: (x坐标数组, y值数组) 解决方案数组
     """
-    # TODO: Validate input parameters
-    
-    # TODO: Extract boundary conditions and setup domain
-    
-    # TODO: Implement shooting method with secant method for slope adjustment
-    
-    # TODO: Return solution arrays
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement solve_bvp_shooting_method function")
+    x0, x_end = x_span
+    ua, ub = boundary_conditions
+
+    x_arr = np.linspace(x0, x_end, n_points)
+
+    def objective_function(m):
+        """目标函数：计算在x_end处的解与期望边界的差异"""
+        y0 = np.array([ua, float(m)])  # 确保转换为浮点数
+
+        sol = solve_ivp(
+            fun=ode_system_shooting,
+            t_span=[x0, x_end],
+            y0=y0,
+            t_eval=x_arr,
+            rtol=tolerance
+        )
+
+        if not sol.success:
+            return float('inf')  # 如果求解失败返回一个大数
+
+        return sol.y[0, -1] - ub
+
+    # 使用fsolve寻找正确的初始斜率
+    m_guess = 0.0
+    m_solution = fsolve(objective_function, m_guess, xtol=tolerance)[0]
+
+    # 使用找到的斜率求解最终解
+    final_y0 = np.array([ua, m_solution])
+    sol = solve_ivp(
+        fun=ode_system_shooting,
+        t_span=[x0, x_end],
+        y0=final_y0,
+        t_eval=x_arr,
+        rtol=tolerance
+    )
+
+    if not sol.success:
+        raise RuntimeError("打靶法求解失败")
+
+    return sol.t, sol.y[0]
 
 
 def solve_bvp_scipy_wrapper(x_span, boundary_conditions, n_points=50):
     """
-    Solve boundary value problem using scipy.solve_bvp.
-    
-    Args:
-        x_span (tuple): Domain (x_start, x_end)
+    使用scipy.solve_bvp求解边界值问题
+
+    参数:
+        x_span (tuple): 求解域 (x_start, x_end)
         boundary_conditions (tuple): (u_left, u_right)
-        n_points (int): Number of initial mesh points
-    
-    Returns:
-        tuple: (x_array, y_array) solution arrays
-    
-    TODO: Implement scipy.solve_bvp wrapper
-    Hint: Set up initial guess and call solve_bvp
+        n_points (int): 初始网格点数
+
+    返回:
+        tuple: (x坐标数组, y值数组) 解决方案数组
     """
-    # TODO: Setup initial mesh and guess
-    
-    # TODO: Call scipy.solve_bvp
-    
-    # TODO: Extract and return solution
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement solve_bvp_scipy_wrapper function")
+    x0, x_end = x_span
+    ua, ub = boundary_conditions
+
+    x_initial = np.linspace(x0, x_end, n_points)
+    y_initial = np.zeros((2, n_points))
+    y_initial[0] = 1  # u(x) = 1
+    y_initial[1] = 0  # u'(x) = 0
+
+    sol = solve_bvp(
+        ode_system_scipy,
+        boundary_conditions_scipy,
+        x_initial,
+        y_initial,
+        tol=1e-6
+    )
+
+    x_fine = np.linspace(x0, x_end, n_points * 2)
+    y_fine = sol.sol(x_fine)
+
+    return x_fine, y_fine[0]
 
 
 def compare_methods_and_plot(x_span=(0, 1), boundary_conditions=(1, 1), n_points=100):
     """
-    Compare shooting method and scipy.solve_bvp, generate comparison plot.
-    
-    Args:
-        x_span (tuple): Domain for the problem
-        boundary_conditions (tuple): Boundary values (left, right)
-        n_points (int): Number of points for plotting
-    
-    Returns:
-        dict: Dictionary containing solutions and analysis
-    
-    TODO: Implement method comparison and visualization
-    Hint: Call both methods, plot results, calculate differences
+    比较打靶法和scipy.solve_bvp方法，并生成对比图
     """
-    # TODO: Solve using both methods
-    
-    # TODO: Create comparison plot with English labels
-    
-    # TODO: Calculate and display differences
-    
-    # TODO: Return analysis results
-    # [STUDENT_CODE_HERE]
-    raise NotImplementedError("Please implement compare_methods_and_plot function")
+    print("使用打靶法求解...")
+    x_shoot, u_shoot = solve_bvp_shooting_method(
+        x_span, boundary_conditions, n_points=n_points
+    )
 
+    print("使用scipy.solve_bvp求解...")
+    x_scipy, u_scipy = solve_bvp_scipy_wrapper(
+        x_span, boundary_conditions, n_points=n_points // 2
+    )
 
-# Test functions for development and debugging
-def test_ode_system():
-    """
-    Test the ODE system implementation.
-    """
-    print("Testing ODE system...")
-    try:
-        # Test point
-        t_test = 0.5
-        y_test = np.array([1.0, 0.5])
-        
-        # Test shooting method ODE system
-        dydt = ode_system_shooting(t_test, y_test)
-        print(f"ODE system (shooting): dydt = {dydt}")
-        
-        # Test scipy ODE system
-        dydt_scipy = ode_system_scipy(t_test, y_test)
-        print(f"ODE system (scipy): dydt = {dydt_scipy}")
-        
-    except NotImplementedError:
-        print("ODE system functions not yet implemented.")
+    # 绘制解决方案比较图
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_shoot, u_shoot, 'b-', linewidth=2, alpha=0.7, label='打靶法')
+    plt.plot(x_scipy, u_scipy, 'r--', linewidth=2, alpha=0.7, label='SciPy solve_bvp')
+    plt.plot([x_span[0], x_span[1]], [boundary_conditions[0], boundary_conditions[1]],
+             'ko', markersize=8)
+    plt.title('边界值问题解决方案比较\n$u\'\'(x) = -π(u(x)+1)/4$', fontsize=14)
+    plt.xlabel('x', fontsize=12)
+    plt.ylabel('u(x)', fontsize=12)
+    plt.legend(loc='best')
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('bvp_comparison.png', dpi=150)
+    plt.show()
 
+    # 计算并绘制差异
+    u_scipy_interp = np.interp(x_shoot, x_scipy, u_scipy)
+    diff = np.abs(u_shoot - u_scipy_interp)
 
-def test_boundary_conditions():
-    """
-    Test the boundary conditions implementation.
-    """
-    print("Testing boundary conditions...")
-    try:
-        ya = np.array([1.0, 0.5])  # Left boundary
-        yb = np.array([1.0, -0.3])  # Right boundary
-        
-        bc_residual = boundary_conditions_scipy(ya, yb)
-        print(f"Boundary condition residuals: {bc_residual}")
-        
-    except NotImplementedError:
-        print("Boundary conditions function not yet implemented.")
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_shoot, diff, 'g-', linewidth=2, alpha=0.8)
+    plt.title('两种解决方案之间的绝对差异', fontsize=14)
+    plt.xlabel('x', fontsize=12)
+    plt.ylabel('|u_shoot - u_scipy|', fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('bvp_difference.png', dpi=150)
+    plt.show()
+
+    print("\n解决方案比较:")
+    print(f"最大绝对差异: {np.max(diff):.4e}")
+    print(f"平均绝对差异: {np.mean(diff):.4e}")
+    print(f"均方根误差: {np.sqrt(np.mean(diff ** 2)):.4e}")
+
+    return {
+        'x_shoot': x_shoot,
+        'u_shoot': u_shoot,
+        'x_scipy': x_scipy,
+        'u_scipy': u_scipy,
+        'max_diff': np.max(diff),
+        'mean_diff': np.mean(diff),
+        'rmse': np.sqrt(np.mean(diff ** 2))
+    }
 
 
 if __name__ == "__main__":
-    print("项目2：打靶法与scipy.solve_bvp求解边值问题")
-    print("=" * 50)
-    
-    # Run basic tests
-    test_ode_system()
-    test_boundary_conditions()
-    
-    # Try to run comparison (will fail until functions are implemented)
-    try:
-        print("\nTesting method comparison...")
-        results = compare_methods_and_plot()
-        print("Method comparison completed successfully!")
-    except NotImplementedError as e:
-        print(f"Method comparison not yet implemented: {e}")
-    
-    print("\n请实现所有标记为 TODO 的函数以完成项目。")
+    # 运行比较和绘图
+    results = compare_methods_and_plot(n_points=100)
+
+    # 保存结果
+    np.savez('bvp_solutions.npz',
+             x_shoot=results['x_shoot'],
+             u_shoot=results['u_shoot'],
+             x_scipy=results['x_scipy'],
+             u_scipy=results['u_scipy'])
+
+    print("\n项目成功完成!")
+    print(f"平均误差: {results['mean_diff']:.2e}")
+    print(f"最大误差: {results['max_diff']:.2e}")
