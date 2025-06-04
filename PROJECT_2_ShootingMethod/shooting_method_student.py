@@ -14,12 +14,12 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 warnings.filterwarnings('ignore')
 
-def ode_system_shooting(t, y):
+def ode_system_shooting(y, t):
     """
     为打靶法定义ODE系统：u'' = -π(u+1)/4 -> 转化为一阶系统 y1 = u, y2 = u'
     参数:
-        t (float): 自变量(时间/位置)
         y (array): 状态向量 [y1, y2]
+        t (float): 自变量(时间/位置)
     返回:
         list: 导数向量 [y1', y2']
     """
