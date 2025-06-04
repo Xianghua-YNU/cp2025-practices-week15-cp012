@@ -1,8 +1,8 @@
 """
 学生模板：平方反比引力场中的运动
 文件：inverse_square_law_motion_student.py
-作者：[你的名字]
-日期：[完成日期]
+作者：[杨非豪]
+日期：[2025.6.4 11：09]
 
 重要：函数名称、参数名称和返回值的结构必须与参考答案保持一致！
 """
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         # 计算能量和角动量
         energy = calculate_energy(sol_ellipse.y.T, GM)
         angular_momentum = calculate_angular_momentum(sol_ellipse.y.T)
-        print(f"Ellipse Demo: Initial Energy approx {energy[0]:.4f}, Angular Momentum {angular_momentum[0]:.4f}")
+        print(f"Ellipse Demo: Initial Energy approx {energy[0]:.3f}")
 
         plt.figure(figsize=(8, 6))
         plt.plot(x_ellipse, y_ellipse, label='椭圆轨道 (示例)')
