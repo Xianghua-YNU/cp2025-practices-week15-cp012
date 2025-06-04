@@ -174,5 +174,7 @@ if __name__ == '__main__':
     energy_variation = np.max(energy) - np.min(energy)
     print(f"Initial Energy: {initial_energy:.4f} J")
     print(f"Energy Variation: {energy_variation:.2e} J")
-anim = animate_double_pendulum(t_arr, sol_arr, skip_frames=10)
-plt.show()
+
+    # 生成并显示动画（确保在t_arr和sol_arr的作用域内）
+    anim = animate_double_pendulum(t_arr, sol_arr, skip_frames=10)
+    plt.show()
